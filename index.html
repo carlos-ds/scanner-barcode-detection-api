@@ -9,7 +9,7 @@
 <body>
   <div style="width: 100%">
     <h1>Barcode Detection API demo</h1>
-    <video id="video" autoplay="true" style="width: 100%; max-width: 300px;"></video>
+    <video id="video" style="width: 100%; max-width: 300px;"></video>
     <div style="font-size: 2rem" id="result"></div>
   </div>
   
@@ -19,26 +19,35 @@
   navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
     .then((stream) => {
       video.srcObject = stream;
+      video.autoplay = true;
+
+      // detect if Barcode Detection API is present
+      if (!('BarcodeDetector' in window)) {
+        console.log('Barcode Detector is not supported by this browser.');
+      } else {
+        console.log('Barcode Detector supported!');
+
+        // create video stream track
+        const mediaStreamTrack = stream.getVideoTracks()[0];
+
+        // detect QR and codabar codes from the media stream in the video element
+        const result = document.getElementById('result');
+        const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
+
+        setInterval(() => {
+          const imageCapture = new ImageCapture(mediaStreamTrack);
+          const frame = imageCapture.grabFrame();
+          barcodeDetector.detect(frame)
+          .then(barcodes => {
+            console.log(barcodes);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        }, 500);
+      }
     })
     .catch((error) => console.log(error))
-  
-  // detect if Barcode Detection API is present
-  if (!('BarcodeDetector' in window)) {
-    console.log('Barcode Detector is not supported by this browser.');
-  } else {
-    console.log('Barcode Detector supported!');
-
-    // detect QR and codabar codes from the media stream in the video element
-    const result = document.getElementById('result');
-    const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
-    barcodeDetector.detect(video)
-      .then(barcodes => {
-        console.log(barcodes);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
   </script>
 </body>
 </html>
