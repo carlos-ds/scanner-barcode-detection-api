@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barcode Detection API</title>
+</head>
+<body>
+  <video id="video" autoplay="true"></video>
+  <script type="text/javascript">
+  // play user media stream in video element
+  const video = document.getElementById('video');
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      video.srcObject = stream;
+    })
+    .catch((error) => console.log(error))
+  
+  // detect if Barcode Detection API is present
+  if (!('BarcodeDetector' in window)) {
+    console.log('Barcode Detector is not supported by this browser.');
+  } else {
+    console.log('Barcode Detector supported!');
+
+    // detect QR and codabar codes from the media stream in the video element
+    const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
+    barcodeDetector.detect(video)
+      .then(barcodes => {
+        barcodes.forEach(barcode => console.log(barcode.rawData));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  </script>
+</body>
+</html>
