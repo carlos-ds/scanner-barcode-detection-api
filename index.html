@@ -33,10 +33,10 @@
     const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
     barcodeDetector.detect(video)
       .then(barcodes => {
-        result.innerText = barcodes.map((barcode) => barcode.rawData).join(', '); 
+        result.innerHTML = JSON.stringify(barcodes);
       })
       .catch(err => {
-        console.log(err);
+        result.innerHTML = JSON.stringify(err);
       });
   }
   </script>
