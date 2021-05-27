@@ -34,13 +34,9 @@
     barcodeDetector.detect(video)
       .then(barcodes => {
         console.log(barcodes);
-        if (barcodes.length) {
-          result.innerHTML = JSON.stringify(barcodes);
-        }  
       })
       .catch(err => {
         console.log(err);
-        result.innerHTML = JSON.stringify(err);
       });
   }
   </script>
