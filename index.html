@@ -7,7 +7,12 @@
   <title>Barcode Detection API</title>
 </head>
 <body>
-  <video id="video" autoplay="true"></video>
+  <h1>Barcode Detection API demo</h1>
+  <div style="width: 100%">
+    <video id="video" autoplay="true"></video>
+  </div>
+  <div style="font-size: 2rem" id="result">
+  </div>
   <script type="text/javascript">
   // play user media stream in video element
   const video = document.getElementById('video');
@@ -24,10 +29,11 @@
     console.log('Barcode Detector supported!');
 
     // detect QR and codabar codes from the media stream in the video element
+    const result = document.getElementById('result');
     const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
     barcodeDetector.detect(video)
       .then(barcodes => {
-        barcodes.forEach(barcode => console.log(barcode.rawData));
+        barcodes.map((barcode) => barcode.rawData).join(', '); 
       })
       .catch(err => {
         console.log(err);
