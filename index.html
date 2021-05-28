@@ -30,7 +30,6 @@
 
         // create video stream track
         const mediaStreamTrack = stream.getVideoTracks()[0];
-        console.log(mediaStreamTrack);
 
         // detect codes from the media stream in the video element
         const result = document.getElementById('result');
@@ -40,7 +39,6 @@
           const imageCapture = new ImageCapture(mediaStreamTrack);
           const frame = await imageCapture.grabFrame();
           const barcodes = await barcodeDetector.detect(frame);
-          console.log(barcodes);
           barcodes.forEach((barcode) => {
             const resultItem = document.createElement('p');
             resultItem.innerText = barcode.rawValue;
