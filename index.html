@@ -29,6 +29,7 @@
 
         // create video stream track
         const mediaStreamTrack = stream.getVideoTracks()[0];
+        console.log(mediaStreamTrack);
 
         // detect QR and codabar codes from the media stream in the video element
         const result = document.getElementById('result');
@@ -36,7 +37,9 @@
 
         setInterval(() => {
           const imageCapture = new ImageCapture(mediaStreamTrack);
+          console.log(imageCapture);
           const frame = imageCapture.grabFrame();
+          console.log(frame);
           barcodeDetector.detect(frame)
           .then(barcodes => {
             console.log(barcodes);
