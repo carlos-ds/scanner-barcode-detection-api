@@ -37,16 +37,17 @@
 
         setInterval(() => {
           const imageCapture = new ImageCapture(mediaStreamTrack);
-          console.log(imageCapture);
-          const frame = imageCapture.grabFrame();
-          console.log(frame);
-          barcodeDetector.detect(frame)
-          .then(barcodes => {
-            console.log(barcodes);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          const frame = imageCapture.grabFrame()
+            .then((frame) => {
+              barcodeDetector.detect(frame)
+                .then(barcodes => {
+                  console.log(barcodes);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => console.log(error))
         }, 500);
       }
     })
