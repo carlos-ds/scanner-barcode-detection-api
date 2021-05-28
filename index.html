@@ -10,6 +10,7 @@
   <div style="width: 100%">
     <h1>Barcode Detection API demo</h1>
     <video id="video" style="width: 100%; max-width: 300px;"></video>
+    <h2>Results found</h2>
     <div style="font-size: 2rem" id="result"></div>
   </div>
   
@@ -43,7 +44,7 @@
           barcodes.forEach((barcode) => {
             const resultItem = document.createElement('p');
             resultItem.innerText = barcode.rawValue;
-            result.appendChild(resultItem);
+            result.prepend(resultItem);
           });
         }, 500);
       }
