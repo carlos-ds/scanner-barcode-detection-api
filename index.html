@@ -31,23 +31,20 @@
         const mediaStreamTrack = stream.getVideoTracks()[0];
         console.log(mediaStreamTrack);
 
-        // detect QR and codabar codes from the media stream in the video element
+        // detect codes from the media stream in the video element
         const result = document.getElementById('result');
-        const barcodeDetector = new BarcodeDetector({ formats: ['qr_code', 'codabar'] });
+        const barcodeDetector = new BarcodeDetector();
 
-        setInterval(() => {
+        setInterval(async () => {
           const imageCapture = new ImageCapture(mediaStreamTrack);
-          const frame = imageCapture.grabFrame()
-            .then((frame) => {
-              barcodeDetector.detect(frame)
-                .then(barcodes => {
-                  console.log(barcodes);
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            })
-            .catch((error) => console.log(error))
+          const frame = await imageCapture.grabFrame();
+          const barcodes = await barcodeDetector.detect(frame);
+          console.log(barcodes);
+          barcodes.forEach((barcode) => {
+            const resultItem = document.createElement('p');
+            resultItem.innerText = barcode.rawValue;
+            result.appendChild(resultItem);
+          });
         }, 500);
       }
     })
